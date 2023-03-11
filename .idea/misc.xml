@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/drawable/splash_image.xml" value="0.233" />
         <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/layout/activity_main.xml" value="0.18704710144927536" />
+        <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/layout/activity_splash_screen.xml" value="0.18704710144927536" />
       </map>
     </option>
   </component>
