@@ -25,12 +25,12 @@ class SplashScreenActivity : AppCompatActivity() {
 
         val sharedPreferences = getPreferences(MODE_PRIVATE)
         if (sharedPreferences.getBoolean("isFirstTime", true)) {
-            splashTextView.text = "Welcome!"
+            splashTextView.text =  getString(R.string.splash_screen_message_welcome)
             val editor = sharedPreferences.edit()
             editor.putBoolean("isFirstTime", false)
             editor.apply()
         } else {
-            splashTextView.text =  "Hello!"
+            splashTextView.text =   getString(R.string.splash_screen_message_hello)
         }
 
 

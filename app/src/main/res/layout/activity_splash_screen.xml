@@ -23,6 +23,9 @@
         android:layout_height="wrap_content"
         android:textSize="40sp"
         android:text="Welcome!"
+        android:fontFamily="@font/avenir_regular"
+        android:textStyle="bold"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
