@@ -1,7 +1,8 @@
-package com.leventgorgu.rickandmorty
+package com.leventgorgu.rickandmorty.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.leventgorgu.rickandmorty.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
