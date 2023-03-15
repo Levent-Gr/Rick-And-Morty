@@ -1,5 +1,7 @@
 package com.leventgorgu.rickandmorty.api
 
+import com.leventgorgu.rickandmorty.model.character.Character
+import com.leventgorgu.rickandmorty.model.character.CharacterItem
 import com.leventgorgu.rickandmorty.model.location.Location
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -17,5 +19,11 @@ class RickAndMortyAPIService {
     suspend fun getLocationsData() : Response<Location> {
         return api.getLocations()
     }
+    suspend fun getCharactersData(characterIds: String) : Response<Character>{
+        return api.getCharacters(characterIds)
+    }
 
+    suspend fun getCharacterData(characterId: String) : Response<CharacterItem>{
+        return api.getCharacter(characterId)
+    }
 }
