@@ -39,7 +39,15 @@ class CharacterRecyclerAdapter : RecyclerView.Adapter<CharacterRecyclerAdapter.C
             .into(holder.binding.characterImageView)
 
 
-
+        holder.binding.characterNameTextView.text = character[position].name
+        if (character[position].gender=="Female")
+            holder.binding.characterGenderImageView.setImageResource(R.drawable.female)
+        else if(character[position].gender=="Male")
+            holder.binding.characterGenderImageView.setImageResource(R.drawable.male)
+        else if(character[position].gender=="Genderless")
+            holder.binding.characterGenderImageView.setImageResource(R.drawable.genderless)
+        else if (character[position].gender=="unknown")
+            holder.binding.characterGenderImageView.setImageResource(R.drawable.unknown)
 
 
 
