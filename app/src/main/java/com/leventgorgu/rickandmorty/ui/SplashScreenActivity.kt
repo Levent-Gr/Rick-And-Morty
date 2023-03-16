@@ -4,6 +4,7 @@ package com.leventgorgu.rickandmorty.ui
 import com.leventgorgu.rickandmorty.R
 
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.view.animation.AnimationUtils
@@ -43,5 +44,8 @@ class SplashScreenActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         },1000)
+
+        supportActionBar?.hide()
+        supportActionBar!!.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.white)))
     }
 }

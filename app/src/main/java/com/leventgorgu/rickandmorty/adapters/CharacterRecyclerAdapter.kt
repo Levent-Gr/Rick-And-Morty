@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.marginStart
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
@@ -13,6 +14,9 @@ import com.leventgorgu.rickandmorty.R
 import com.leventgorgu.rickandmorty.databinding.CharacterRowBinding
 import com.leventgorgu.rickandmorty.model.character.Character
 import com.leventgorgu.rickandmorty.model.character.CharacterItem
+import com.leventgorgu.rickandmorty.ui.FeedFragment
+import com.leventgorgu.rickandmorty.ui.FeedFragmentDirections
+
 
 class CharacterRecyclerAdapter : RecyclerView.Adapter<CharacterRecyclerAdapter.CharacterViewHolder>() {
 
@@ -73,6 +77,14 @@ class CharacterRecyclerAdapter : RecyclerView.Adapter<CharacterRecyclerAdapter.C
 
         holder.binding.characterImageView.layoutParams = characterImageViewParams
         holder.binding.characterNameTextView.layoutParams = characterNameTextViewParams
+
+
+        holder.itemView.setOnClickListener {
+            val characterId = character[position].id.toString()
+            val characterName = character[position].name
+            val action = FeedFragmentDirections.actionFeedFragmentToDetailFragment(characterId,characterName)
+            Navigation.findNavController(holder.itemView).navigate(action)
+        }
     }
 
     override fun getItemCount(): Int {
