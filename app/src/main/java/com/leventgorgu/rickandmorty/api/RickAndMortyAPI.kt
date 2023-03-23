@@ -6,11 +6,12 @@ import com.leventgorgu.rickandmorty.model.location.Location
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface RickAndMortyAPI {
 
     @GET("/api/location")
-    suspend fun getLocations():Response<Location>
+    suspend fun getLocations(@Query("page")pageNumber:String):Response<Location>
 
     @GET("/api/character/{ids}")
     suspend fun getCharacters(@Path("ids") characterIds: String): Response<Character>

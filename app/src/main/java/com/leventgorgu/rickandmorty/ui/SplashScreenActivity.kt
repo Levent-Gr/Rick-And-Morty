@@ -33,17 +33,15 @@ class SplashScreenActivity : AppCompatActivity() {
             splashTextView.text =   getString(R.string.splash_screen_message_hello)
         }
 
-
         activitySplashBinding.imageView.animation = AnimationUtils.loadAnimation(this,R.anim.anim_logo)
         activitySplashBinding.TextView.animation = AnimationUtils.loadAnimation(this,R.anim.anim_text)
-
-
 
         Handler().postDelayed({
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left)
             finish()
-        },1000)
+        },2000)
 
         supportActionBar?.hide()
         supportActionBar!!.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.white)))

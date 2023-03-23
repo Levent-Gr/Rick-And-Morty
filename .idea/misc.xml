@@ -3,16 +3,32 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/drawable-v24/ic_character.xml" value="0.23" />
+        <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/drawable-v24/ic_character_row_bg.xml" value="0.2555" />
+        <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/drawable-v24/ic_characters.xml" value="0.2555" />
         <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/drawable/border.xml" value="0.23" />
         <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/drawable/border_selected.xml" value="0.23" />
+        <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/drawable/round_bg.xml" value="0.23" />
         <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/drawable/splash_image.xml" value="0.233" />
+        <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/layout-land/activity_main.xml" value="0.21164021164021163" />
+        <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/layout-land/activity_splash_screen.xml" value="0.21164021164021163" />
+        <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/layout-land/character_right_row.xml" value="0.21164021164021163" />
+        <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/layout-land/character_row.xml" value="0.21164021164021163" />
+        <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/layout-land/fragment_detail.xml" value="0.21164021164021163" />
+        <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/layout-land/fragment_feed.xml" value="0.21164021164021163" />
+        <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/layout-land/item_loading.xml" value="0.21164021164021163" />
+        <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/layout-land/location_row.xml" value="0.21164021164021163" />
         <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/layout/activity_main.xml" value="0.264" />
-        <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/layout/activity_splash_screen.xml" value="0.18704710144927536" />
+        <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/layout/activity_splash_screen.xml" value="0.176" />
+        <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/layout/character_right_row.xml" value="0.264" />
         <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/layout/character_row.xml" value="0.264" />
         <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/layout/character_row_right.xml" value="0.18704710144927536" />
-        <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/layout/fragment_detail.xml" value="0.18704710144927536" />
+        <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/layout/fragment_detail.xml" value="0.264" />
         <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/layout/fragment_feed.xml" value="0.18704710144927536" />
+        <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/layout/item_loading.xml" value="0.152" />
         <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/layout/location_row.xml" value="0.176" />
+        <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2555" />
+        <entry key="..\:/Users/leven/AndroidStudioProjects/RickAndMorty/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.2555" />
       </map>
     </option>
   </component>

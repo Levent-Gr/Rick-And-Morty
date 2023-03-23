@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,9 +9,11 @@
     android:layout_height="wrap_content"
     app:cardBackgroundColor="@color/white"
     app:cardElevation="8dp"
-    android:layout_margin="10dp"
+    android:layout_marginStart="50dp"
+    android:layout_marginEnd="50dp"
+    android:layout_marginTop="15dp"
+    android:layout_marginBottom="15dp"
     app:cardCornerRadius="8dp">
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,8 +21,8 @@
 
         <ImageView
             android:id="@+id/characterGenderImageView"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:src="@drawable/male"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -31,9 +34,8 @@
             android:layout_width="140dp"
             android:layout_height="140dp"
             android:padding="10dp"
-            android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginEnd="50dp"            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -41,15 +43,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenir_regular"
-            android:layout_margin="5dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
             android:text="Character Name"
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/characterGenderImageView"
+            app:layout_constraintEnd_toStartOf="@+id/characterGenderImageView"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.cardview.widget.CardView>
+

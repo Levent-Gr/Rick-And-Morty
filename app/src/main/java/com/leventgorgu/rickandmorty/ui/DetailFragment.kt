@@ -42,22 +42,25 @@ class DetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentDetailBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        (activity as AppCompatActivity).supportActionBar?.show()
-
-        val activity = activity as AppCompatActivity?
-        val actionBar: ActionBar? = activity!!.supportActionBar
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val activity = activity as AppCompatActivity
+        val actionBar: ActionBar? = activity.supportActionBar
         actionBar!!.title = characterName
+        actionBar?.setDisplayShowTitleEnabled(true)
+        activity.supportActionBar!!.show()
 
         val titleId = resources.getIdentifier("action_bar_title", "id", "android")
-        val titleTextView = activity?.findViewById<TextView>(titleId)
+        val titleTextView = activity.findViewById<TextView>(titleId)
         titleTextView?.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
 
-        actionBar?.apply {
+        actionBar.apply {
             setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_ios_24)
             setDisplayHomeAsUpEnabled(true)
         }
-        return binding.root
     }
 
     override fun onResume() {
@@ -101,9 +104,7 @@ class DetailFragment : Fragment() {
             }
         }
         binding.characterEpisodesTextView.text = episodeString
-
         binding.characterCreatedTextView.text = character[0].created
-
     }
 
     private fun placeHolderProgressBar(context: Context): CircularProgressDrawable {
@@ -119,6 +120,4 @@ class DetailFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-
 }
