@@ -4,27 +4,25 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.leventgorgu.rickandmorty.api.RickAndMortyAPIService
-import com.leventgorgu.rickandmorty.model.character.Character
+import com.leventgorgu.rickandmorty.model.character.CharacterItem
+import com.leventgorgu.rickandmorty.repo.RickAndMortyRepositoryInterface
+import com.leventgorgu.rickandmorty.utils.NetworkResult
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class DetailViewModel:ViewModel() {
+@HiltViewModel
+class DetailViewModel @Inject constructor(private val rickAndMortyRepository: RickAndMortyRepositoryInterface):ViewModel() {
 
-    private var rickAndMortyAPIService = RickAndMortyAPIService()
-
-    private val _character = MutableLiveData<Character>()
-    val character: LiveData<Character> = _character
+    private val _character = MutableLiveData<NetworkResult<CharacterItem>>()
+    val character: LiveData<NetworkResult<CharacterItem>> = _character
 
     fun getCharacter(characterIds: String){
         viewModelScope.launch(handler) {
-            val data = rickAndMortyAPIService.getCharacterData(characterIds)
-            if (data.isSuccessful){
-                data.body()?.let { characterItemFromAPI ->
-                    val character = Character()
-                    character.add(characterItemFromAPI)
-                    _character.value = character
-                }
+            val characterData= rickAndMortyRepository.getCharacterData(characterIds)
+            characterData.let {
+                _character.value = it
             }
         }
     }

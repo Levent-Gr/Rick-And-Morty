@@ -12,7 +12,9 @@ import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import com.leventgorgu.rickandmorty.R
 import com.leventgorgu.rickandmorty.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

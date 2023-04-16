@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -18,8 +19,13 @@ import com.bumptech.glide.request.RequestOptions
 import com.leventgorgu.rickandmorty.R
 import com.leventgorgu.rickandmorty.databinding.FragmentDetailBinding
 import com.leventgorgu.rickandmorty.model.character.Character
+import com.leventgorgu.rickandmorty.model.character.CharacterItem
+import com.leventgorgu.rickandmorty.utils.Status
 import com.leventgorgu.rickandmorty.viewmodel.DetailViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@AndroidEntryPoint
 class DetailFragment : Fragment() {
 
     private var _binding: FragmentDetailBinding? = null
@@ -71,32 +77,44 @@ class DetailFragment : Fragment() {
 
     private fun observeToSubscribe(){
         viewModel.character.observe(viewLifecycleOwner, Observer {
-            if (it!=null){
-                updateUI(it)
+            when(it.status){
+                Status.SUCCESS->{
+                    updateUI(it.data!!)
+                }
+                Status.ERROR->{
+                    binding.characterProgressBar!!.visibility = View.VISIBLE
+                    Toast.makeText(requireContext(),it.message ?: "Error", Toast.LENGTH_LONG).show()
+                }
+                Status.LOADING->{
+                    binding.characterProgressBar!!.visibility = View.VISIBLE
+                }
             }
         })
     }
 
 
-    private fun updateUI(character: Character){
+    private fun updateUI(characterItem: CharacterItem){
+
+        binding.characterProgressBar!!.visibility = View.INVISIBLE
 
         val options = RequestOptions()
             .placeholder(placeHolderProgressBar(binding.root.context))
             .error(R.mipmap.ic_launcher_round)
 
+
         Glide.with(binding.root.context)
             .setDefaultRequestOptions(options)
-            .load(character[0].image)
+            .load(characterItem.image)
             .into(binding.characterImageView)
 
-        binding.characterStatusTextView.text = character[0].status
-        binding.characterSpecyTextView.text = character[0].species
-        binding.characterGenderTextView.text = character[0].gender
-        binding.characterOriginTextView.text = character[0].origin.name
-        binding.characterLocationTextView.text = character[0].location.name
+        binding.characterStatusTextView.text = characterItem.status
+        binding.characterSpecyTextView.text = characterItem.species
+        binding.characterGenderTextView.text = characterItem.gender
+        binding.characterOriginTextView.text = characterItem.origin.name
+        binding.characterLocationTextView.text = characterItem.location.name
 
         var episodeString = ""
-        val episodes = character[0].episode
+        val episodes = characterItem.episode
         for (i in episodes.indices){
             episodeString += episodes[i].substringAfterLast("/")
             if (i != episodes.lastIndex) {
@@ -104,7 +122,7 @@ class DetailFragment : Fragment() {
             }
         }
         binding.characterEpisodesTextView.text = episodeString
-        binding.characterCreatedTextView.text = character[0].created
+        binding.characterCreatedTextView.text = characterItem.created
     }
 
     private fun placeHolderProgressBar(context: Context): CircularProgressDrawable {

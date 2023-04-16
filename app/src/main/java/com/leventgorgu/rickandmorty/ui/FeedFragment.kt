@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
@@ -20,11 +21,15 @@ import com.leventgorgu.rickandmorty.adapters.CharacterRecyclerAdapter
 import com.leventgorgu.rickandmorty.utils.CustomScrollListener
 import com.leventgorgu.rickandmorty.adapters.LocationRecyclerAdapter
 import com.leventgorgu.rickandmorty.databinding.FragmentFeedBinding
+import com.leventgorgu.rickandmorty.model.character.Character
 import com.leventgorgu.rickandmorty.model.location.Result
 import com.leventgorgu.rickandmorty.utils.CharacterLocationListener
+import com.leventgorgu.rickandmorty.utils.Status
 import com.leventgorgu.rickandmorty.viewmodel.FeedViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-
+@AndroidEntryPoint
 class FeedFragment : Fragment(), CharacterLocationListener {
 
     private var _binding: FragmentFeedBinding? = null
@@ -45,6 +50,7 @@ class FeedFragment : Fragment(), CharacterLocationListener {
             fragmentState = true
         }
     }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val activity = requireActivity() as AppCompatActivity
         val actionBar = activity.supportActionBar
@@ -92,7 +98,6 @@ class FeedFragment : Fragment(), CharacterLocationListener {
                 customScrollListener.setIsLoading(true)
             }
         }
-
         binding.locationRecyclerView.addOnScrollListener(customScrollListener)
     }
 
@@ -109,24 +114,63 @@ class FeedFragment : Fragment(), CharacterLocationListener {
 
     private fun observeToSubscribe(){
         viewModel.location.observe(viewLifecycleOwner, Observer {
-            if (it !=null){
-                locationRecyclerAdapter.resultList = ArrayList(it.results)
-                if (pageNumber.toInt()!=0 && pageNumber.toInt()<8){
-                    val nullResult=Result("","",0,"", listOf(),"","")
-                    locationRecyclerAdapter.resultList.add(nullResult)
+            when(it.status){
+                Status.SUCCESS -> {
+                    binding.progressBarLocation.visibility = View.GONE
+
+                    locationRecyclerAdapter.resultList = ArrayList(it.data!!.results)
+                    if (pageNumber.toInt()!=0 && pageNumber.toInt()<8){
+                        val nullResult=Result("","",0,"", listOf(),"","")
+                        locationRecyclerAdapter.resultList.add(nullResult)
+                    }
+                    val page = it.data.info.next.substringAfterLast("=")
+                    if (page != ""){
+                        pageNumber=page
+                        viewModel.savePageNumber(page)
+                    }
+                    locationRecyclerAdapter.notifyDataSetChanged()
                 }
-                val page = it.info.next.substringAfterLast("=")
-                if (page != ""){
-                    pageNumber=page
-                    viewModel.savePageNumber(page)
+                Status.LOADING ->{
+                    binding.progressBarLocation.visibility = View.VISIBLE
                 }
-                locationRecyclerAdapter.notifyDataSetChanged()
+                Status.ERROR ->{
+                    binding.progressBarLocation.visibility = View.VISIBLE
+                    Toast.makeText(requireContext(),it.message ?: "Error", Toast.LENGTH_LONG).show()
+                }
+            }
+        })
+        viewModel.characters.observe(viewLifecycleOwner, Observer {
+            when(it.status){
+                Status.SUCCESS->{
+                    binding.progressBarCharacter!!.visibility = View.GONE
+                    characterRecyclerAdapter.setCharacter(it.data!!)
+                    characterRecyclerAdapter.notifyDataSetChanged()
+                }
+                Status.ERROR->{
+                    binding.progressBarCharacter.visibility = View.VISIBLE
+                    Toast.makeText(requireContext(),it.message ?: "Error", Toast.LENGTH_LONG).show()
+                }
+                Status.LOADING->{
+                    binding.progressBarCharacter.visibility = View.VISIBLE
+                }
             }
         })
         viewModel.character.observe(viewLifecycleOwner, Observer {
-            if (it !=null){
-                characterRecyclerAdapter.setCharacter(it)
-                characterRecyclerAdapter.notifyDataSetChanged()
+            when(it.status){
+                Status.SUCCESS->{
+                    binding.progressBarCharacter!!.visibility = View.GONE
+                    val character = Character()
+                    character.add(it.data!!)
+                    characterRecyclerAdapter.setCharacter(character)
+                    characterRecyclerAdapter.notifyDataSetChanged()
+                }
+                Status.ERROR->{
+                    binding.progressBarCharacter.visibility = View.VISIBLE
+                    Toast.makeText(requireContext(),it.message ?: "Error", Toast.LENGTH_LONG).show()
+                }
+                Status.LOADING->{
+                    binding.progressBarCharacter.visibility = View.VISIBLE
+                }
             }
         })
         viewModel.selectedRow.observe(viewLifecycleOwner, Observer {

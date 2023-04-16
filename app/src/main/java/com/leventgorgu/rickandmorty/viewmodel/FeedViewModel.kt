@@ -4,17 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.leventgorgu.rickandmorty.R
-import com.leventgorgu.rickandmorty.api.RickAndMortyAPIService
 import com.leventgorgu.rickandmorty.model.character.Character
+import com.leventgorgu.rickandmorty.model.character.CharacterItem
 import com.leventgorgu.rickandmorty.model.location.Location
-import com.leventgorgu.rickandmorty.model.location.Result
+import com.leventgorgu.rickandmorty.repo.RickAndMortyRepositoryInterface
+import com.leventgorgu.rickandmorty.utils.NetworkResult
+import com.leventgorgu.rickandmorty.utils.Status
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class FeedViewModel:ViewModel() {
-
-    private var rickAndMortyAPIService = RickAndMortyAPIService()
+@HiltViewModel
+class FeedViewModel @Inject constructor(private val rickAndMortyRepository: RickAndMortyRepositoryInterface):ViewModel() {
 
     private val _fragmentState = MutableLiveData<Boolean>()
     val fragmentState: LiveData<Boolean> = _fragmentState
@@ -25,11 +27,14 @@ class FeedViewModel:ViewModel() {
     private val _selectedRow = MutableLiveData<Int>()
     val selectedRow: LiveData<Int> = _selectedRow
 
-    private val _location = MutableLiveData<Location>()
-    val location: LiveData<Location> = _location
+    private val _location = MutableLiveData<NetworkResult<Location>>()
+    val location: LiveData<NetworkResult<Location>> = _location
 
-    private val _character = MutableLiveData<Character>()
-    val character: LiveData<Character> = _character
+    private val _characters = MutableLiveData<NetworkResult<Character>>()
+    val characters: LiveData<NetworkResult<Character>> = _characters
+
+    private val _character = MutableLiveData<NetworkResult<CharacterItem>>()
+    val character: LiveData<NetworkResult<CharacterItem>> = _character
 
     fun saveFragmentState(feedFragmentState:Boolean){
         _fragmentState.value = feedFragmentState
@@ -46,21 +51,38 @@ class FeedViewModel:ViewModel() {
 
     fun getLocations(pageNumber:String){
         viewModelScope.launch(handler) {
-            val data = rickAndMortyAPIService.getLocationsData(pageNumber)
-            data.body()?.let { newLocationData ->
-                if (_location.value == null){
-                    _location.value = newLocationData
-                }else{
-                    val currentData = _location.value
-                    currentData?.let {
-                        currentData.results =  currentData.results + newLocationData.results
-                        if (newLocationData.info.next != null){
-                            currentData.info = newLocationData.info
-                        }else{
-                            currentData.info.next = "=0"
+            val locationsData = rickAndMortyRepository.getLocationsData(pageNumber)
+            if (_location.value == null){
+                if (locationsData.data !=null)
+                    _location.value = NetworkResult.success(locationsData.data)
+                else if(locationsData.status == Status.ERROR)
+                    _location.value = NetworkResult.error("Error",null)
+                else if (locationsData.status == Status.LOADING){
+                    _location.value = NetworkResult.loading(null)
+                }
+            }else{
+                val currentData = _location.value
+                currentData?.let {
+                    when(locationsData.status){
+                        Status.SUCCESS ->{
+                            currentData.data!!.results = currentData.data.results + locationsData.data!!.results
+                            if (locationsData.data.info.next != null){
+                                currentData.data.info = locationsData.data.info
+                            }else{
+                                currentData.data.info.next = "=0"
+                            }
+                            _location.value = currentData!!
                         }
-                        _location.value = currentData!!
+                        Status.ERROR ->{
+                            currentData.status = locationsData.status
+                            _location.value = currentData!!
+                        }
+                        Status.LOADING->{
+                            currentData.status = locationsData.status
+                            _location.value = currentData!!
+                        }
                     }
+
                 }
             }
         }
@@ -68,23 +90,17 @@ class FeedViewModel:ViewModel() {
 
     fun getCharacters(characterIds: String){
         viewModelScope.launch(handler) {
-            val data = rickAndMortyAPIService.getCharactersData(characterIds)
-            if (data.isSuccessful){
-                data.body()?.let { characterFromAPI ->
-                    _character.value = characterFromAPI
-                }
+            val charactersData = rickAndMortyRepository.getCharactersData(characterIds)
+            charactersData.let {
+                _characters.value = it
             }
         }
     }
     fun getCharacter(characterIds: String){
         viewModelScope.launch(handler) {
-            val data = rickAndMortyAPIService.getCharacterData(characterIds)
-            if (data.isSuccessful){
-                data.body()?.let { characterItemFromAPI ->
-                    val character = Character()
-                    character.add(characterItemFromAPI)
-                    _character.value = character
-                }
+            val characterData= rickAndMortyRepository.getCharacterData(characterIds)
+            characterData.let {
+                _character.value = it
             }
         }
     }
